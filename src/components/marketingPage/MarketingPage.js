@@ -51,7 +51,12 @@ export default function MarketingPage() {
           Coming soon to your local school
         </Button>
       </Flex>
-      <Center width="100%" p={4} w={["100%", "100%", "100%", "100%", "50%"]} id="image-container">
+      <Center
+        width="100%"
+        p={4}
+        w={["100%", "100%", "100%", "100%", "50%"]}
+        id="image-container"
+      >
         <Image
           src={uniform}
           alt="school uniform"

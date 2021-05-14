@@ -10,7 +10,7 @@ describe("Load Home Page", () => {
     cy.contains("School uniforms are expensive, and kids outgrow them.");
   });
   it("Contains image with alt text", () => {
-    cy.get("img").xshould("have.attr", "alt");
+    cy.get("img").should("have.attr", "alt");
   });
   it("Contains button", () => {
     cy.contains("Coming soon to your local school");
