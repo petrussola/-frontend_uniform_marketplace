@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+.cache/
+coverage/
+.vscode/
+.env
+cypress.env.json
+cypress/videos/
+cypress/screenshots/
+dist/
