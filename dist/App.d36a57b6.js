@@ -98866,7 +98866,8 @@ function MarketingPage() {
   }, "Coming soon to your local school")), /*#__PURE__*/_react.default.createElement(_react2.Center, {
     width: "100%",
     p: 4,
-    w: ["100%", "100%", "100%", "100%", "50%"]
+    w: ["100%", "100%", "100%", "100%", "50%"],
+    id: "image-container"
   }, /*#__PURE__*/_react.default.createElement(_react2.Image, {
     src: _uniform_.default,
     alt: "school uniform",
@@ -99060,7 +99061,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58319" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60392" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
