@@ -16,6 +16,9 @@ import * as yup from "yup";
 // helpers
 import { authSchema } from "../../helpers/validation";
 
+// components
+import AlertMessage from "./AlertMessage";
+
 const initialValues = {
   email: "",
   passwordOne: "",
@@ -23,9 +26,9 @@ const initialValues = {
 };
 
 const initialValidationErrors = {
-  email: "",
-  passwordOne: "",
-  passwordTwo: "",
+  email: "not checked",
+  passwordOne: "not checked",
+  passwordTwo: "not checked",
 };
 
 export default function Signup() {
@@ -34,6 +37,8 @@ export default function Signup() {
   const [validationErrors, setValidationErrors] = useState(
     initialValidationErrors
   );
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(false);
 
   const handleUserInput = (e) => {
     setTypedUser({ ...typedUser, [e.target.name]: e.target.value });
@@ -44,10 +49,18 @@ export default function Signup() {
     switch (e.target.name) {
       case "passwordTwo": // checks if both passwords match
         if (typedUser.passwordOne !== typedUser.passwordTwo) {
+          // if both passwords do not match
           setValidationErrors({
             ...validationErrors,
             passwordTwo: "Passwords must match",
+          }); // set error
+          setSubmittedUser({ ...submittedUser, [e.target.name]: "" }); // set to be submitted state to empty
+        } else {
+          setSubmittedUser({
+            ...submittedUser,
+            [e.target.name]: e.target.value,
           });
+          setValidationErrors({ ...validationErrors, [e.target.name]: "" });
         }
         break;
       default:
@@ -64,7 +77,28 @@ export default function Signup() {
               ...validationErrors,
               [e.target.name]: err.message,
             }); // sets validation error message so it displays underneath the input field
+            setSubmittedUser({ ...submittedUser, [e.target.name]: "" });
           });
+    }
+  };
+
+  const handleSubmit = () => {
+    let readyToSubmit = true;
+    for (let key in validationErrors) {
+      if (validationErrors[key].length !== 0) {
+        readyToSubmit = false;
+      }
+    }
+    if (readyToSubmit === true) {
+      console.log("ready");
+      setSuccessMessage(true);
+      setErrorMessage(false);
+      setTypedUser(initialValues);
+      setSubmittedUser(initialValues);
+    } else {
+      console.log("fail");
+      setSuccessMessage(false);
+      setErrorMessage(true);
     }
   };
 
@@ -80,12 +114,19 @@ export default function Signup() {
           <LockIcon w={6} h={6} />
         </Box>
         <Text fontSize="3xl">Sign Up</Text>
+        <AlertMessage
+          successMessage={successMessage}
+          errorMessage={errorMessage}
+        />
         <FormControl
           id="email"
           isRequired
-          isInvalid={validationErrors && validationErrors.email.length > 0}
+          isInvalid={
+            validationErrors.email !== "not checked" &&
+            validationErrors.email.length > 0
+          }
         >
-          <FormLabel>Email</FormLabel>
+          <FormLabel htmlFor="email">Email</FormLabel>
           <Input
             size="lg"
             variant="flushed"
@@ -96,14 +137,15 @@ export default function Signup() {
             onBlur={handleValidation}
           />
           <FormErrorMessage>
-            {validationErrors && validationErrors.email}
+            {validationErrors.email !== "not checked" && validationErrors.email}
           </FormErrorMessage>
         </FormControl>
         <FormControl
           id="passwordOne"
           isRequired
           isInvalid={
-            validationErrors && validationErrors.passwordOne.length > 0
+            validationErrors.passwordOne !== "not checked" &&
+            validationErrors.passwordOne.length > 0
           }
         >
           <FormLabel>Type your password</FormLabel>
@@ -117,14 +159,16 @@ export default function Signup() {
             onBlur={handleValidation}
           />
           <FormErrorMessage>
-            {validationErrors && validationErrors.passwordOne}
+            {validationErrors.passwordOne !== "not checked" &&
+              validationErrors.passwordOne}
           </FormErrorMessage>
         </FormControl>
         <FormControl
           id="passwordTwo"
           isRequired
           isInvalid={
-            validationErrors && validationErrors.passwordTwo.length > 0
+            validationErrors.passwordTwo !== "not checked" &&
+            validationErrors.passwordTwo.length > 0
           }
         >
           <FormLabel>Re-type your password</FormLabel>
@@ -138,11 +182,21 @@ export default function Signup() {
             onBlur={handleValidation}
           />
           <FormErrorMessage>
-            {validationErrors && validationErrors.passwordTwo}
+            {validationErrors.passwordTwo !== "not checked" &&
+              validationErrors.passwordTwo}
           </FormErrorMessage>
         </FormControl>
-        <Button w="100%" bg="blue.500" color="white" mx="4" my="1">Sign Up</Button>
+        <Button
+          w="100%"
+          bg="blue.500"
+          color="white"
+          mx="4"
+          my="1"
+          onClick={handleSubmit}
+        >
+          Sign Up
+        </Button>
       </Flex>
-    </Center> 
+    </Center>
   );
 }

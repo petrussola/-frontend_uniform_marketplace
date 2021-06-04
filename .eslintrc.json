@@ -10,7 +10,8 @@
     "react/prop/types": 0, // unless you do prop types
     "no-console": 1, // it will be a warning
     "react-hooks/rules-of-hooks": 2,
-    "react-hooks/exhaustive-deps": 1 // has to do with effects
+    "react-hooks/exhaustive-deps": 1, // has to do with effects
+    "react/prop-types": 0 // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prop-types.md
   },
   "plugins": ["react", "import", "jsx-a11y", "react-hooks"],
   "parserOptions": {
