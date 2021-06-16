@@ -12,9 +12,11 @@ import {
 } from "@chakra-ui/react";
 import { LockIcon } from "@chakra-ui/icons";
 import * as yup from "yup";
+import axios from "axios";
 
 // helpers
 import { authSchema } from "../../helpers/validation";
+import { config } from "../../config/envVariables";
 
 // components
 import AlertMessage from "./AlertMessage";
@@ -39,6 +41,7 @@ export default function Signup() {
   );
   const [errorMessage, setErrorMessage] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false);
+  const [errorText, setErrorText] = useState(null);
 
   const handleUserInput = (e) => {
     setTypedUser({ ...typedUser, [e.target.name]: e.target.value });
@@ -90,13 +93,23 @@ export default function Signup() {
       }
     }
     if (readyToSubmit === true) {
-      console.log("ready");
-      setSuccessMessage(true);
-      setErrorMessage(false);
-      setTypedUser(initialValues);
-      setSubmittedUser(initialValues);
+      axios
+        .post(`${config.baseUrl}/auth/signup`, {
+          email: submittedUser.email,
+          password: submittedUser.passwordOne,
+        })
+        .then(() => {
+          setSuccessMessage(true);
+          setErrorMessage(false);
+          setTypedUser(initialValues);
+          setSubmittedUser(initialValues);
+        })
+        .catch((err) => {
+          const errorMessage = err.response.data.message;
+          setErrorMessage(errorMessage);
+          setErrorText(errorMessage)
+        });
     } else {
-      console.log("fail");
       setSuccessMessage(false);
       setErrorMessage(true);
     }
@@ -117,6 +130,7 @@ export default function Signup() {
         <AlertMessage
           successMessage={successMessage}
           errorMessage={errorMessage}
+          errorText={errorText}
         />
         <FormControl
           id="email"
