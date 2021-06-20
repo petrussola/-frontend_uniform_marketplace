@@ -2,7 +2,7 @@ import * as yup from "yup";
 
 export const authSchema = yup.object().shape({
   email: yup.string().email().required().trim().lowercase(),
-  passwordOne: yup
+  password: yup
     .string()
     .required()
     .trim()

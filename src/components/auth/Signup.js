@@ -23,13 +23,13 @@ import AlertMessage from "./AlertMessage";
 
 const initialValues = {
   email: "",
-  passwordOne: "",
+  password: "",
   passwordTwo: "",
 };
 
 const initialValidationErrors = {
   email: "not checked",
-  passwordOne: "not checked",
+  password: "not checked",
   passwordTwo: "not checked",
 };
 
@@ -51,7 +51,7 @@ export default function Signup() {
     setValidationErrors(initialValidationErrors);
     switch (e.target.name) {
       case "passwordTwo": // checks if both passwords match
-        if (typedUser.passwordOne !== typedUser.passwordTwo) {
+        if (typedUser.password !== typedUser.passwordTwo) {
           // if both passwords do not match
           setValidationErrors({
             ...validationErrors,
@@ -67,7 +67,7 @@ export default function Signup() {
         }
         break;
       default:
-        // will check email or passwordOne
+        // will check email or password
         yup
           .reach(authSchema, e.target.name) // https://github.com/jquense/yup/issues/102#issuecomment-352260463
           .validate(e.target.value)
@@ -96,7 +96,7 @@ export default function Signup() {
       axios
         .post(`${config.baseUrl}/auth/signup`, {
           email: submittedUser.email,
-          password: submittedUser.passwordOne,
+          password: submittedUser.password,
         })
         .then(() => {
           setSuccessMessage(true);
@@ -107,7 +107,7 @@ export default function Signup() {
         .catch((err) => {
           const errorMessage = err.response.data.message;
           setErrorMessage(errorMessage);
-          setErrorText(errorMessage)
+          setErrorText(errorMessage);
         });
     } else {
       setSuccessMessage(false);
@@ -155,26 +155,26 @@ export default function Signup() {
           </FormErrorMessage>
         </FormControl>
         <FormControl
-          id="passwordOne"
+          id="password"
           isRequired
           isInvalid={
-            validationErrors.passwordOne !== "not checked" &&
-            validationErrors.passwordOne.length > 0
+            validationErrors.password !== "not checked" &&
+            validationErrors.password.length > 0
           }
         >
           <FormLabel>Type your password</FormLabel>
           <Input
             size="lg"
             variant="flushed"
-            value={typedUser.passwordOne}
-            name="passwordOne"
+            value={typedUser.password}
+            name="password"
             onChange={handleUserInput}
             type="text"
             onBlur={handleValidation}
           />
           <FormErrorMessage>
-            {validationErrors.passwordOne !== "not checked" &&
-              validationErrors.passwordOne}
+            {validationErrors.password !== "not checked" &&
+              validationErrors.password}
           </FormErrorMessage>
         </FormControl>
         <FormControl
